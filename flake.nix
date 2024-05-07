@@ -11,21 +11,29 @@
         {
           name = "ircbot";
           src = ./.;
+          nativeBuildInputs = with pkgs; [
+            pkg-config
+          ];
           buildInputs = with pkgs; [
-            libircclient
+            meson
+            ninja
+            openssl
           ];
           buildPhase = ''
-            make main
+            meson compile
           '';
           installPhase = ''
             mkdir -p $out/bin
-            cp main $out/bin
+            cp ircbot $out/bin
           '';
         };
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
+          pkg-config
+          openssl
+          meson
+          ninja
           clang-tools
-          libircclient
         ];
       };
     }
