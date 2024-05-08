@@ -7,7 +7,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      packages.ircbot = pkgs.stdenv.mkDerivation
+      packages.default = pkgs.stdenv.mkDerivation
         {
           name = "ircbot";
           src = ./.;
