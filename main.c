@@ -34,10 +34,12 @@ int main(void) {
     return -1;
   }
 
-  char userBuffer[BUFFER_SIZE];
-  sprintf(userBuffer, "USER codebambot localhost irc.libera.chat "
-                      "codebambot\nNICK codebambot\n");
-  send(sockfd, userBuffer, strlen(userBuffer), 0);
+  {
+    char userBuffer[BUFFER_SIZE];
+    sprintf(userBuffer, "USER codebambot localhost irc.libera.chat "
+                        "codebambot\nNICK codebambot\n");
+    send(sockfd, userBuffer, strlen(userBuffer), 0);
+  }
 
   char response[BUFFER_SIZE];
   int motd_recieved = 0;
@@ -53,9 +55,11 @@ int main(void) {
     printf("%s\n", response);
   }
 
-  char joinBuffer[BUFFER_SIZE];
-  sprintf(joinBuffer, "JOIN #codebambot\n");
-  send(sockfd, joinBuffer, strlen(joinBuffer), 0);
+  {
+    char joinBuffer[BUFFER_SIZE];
+    sprintf(joinBuffer, "JOIN #codebambot\n");
+    send(sockfd, joinBuffer, strlen(joinBuffer), 0);
+  }
 
   while (1) {
     int bytesReceived = recv(sockfd, response, BUFFER_SIZE, 0);
@@ -76,9 +80,20 @@ int main(void) {
         i++;
       } else {
         if (private) {
-          char privBuffer[BUFFER_SIZE];
-          sprintf(privBuffer, "PRIVMSG #codebambot :hello world\n");
-          send(sockfd, privBuffer, strlen(privBuffer), 0);
+          {
+            char privBuffer[BUFFER_SIZE];
+            sprintf(privBuffer, "PRIVMSG #codebambot :hello world\n");
+            send(sockfd, privBuffer, strlen(privBuffer), 0);
+          }
+          int i = 0;
+          for (char *s = strtok_r(response, " ", &saveptr); s;
+               s = strtok_r(NULL, " ", &saveptr)) {
+            if (i < 4) {
+              i++;
+            } else {
+              printf("command: %s\n", s);
+            }
+          }
         }
         break;
       }
