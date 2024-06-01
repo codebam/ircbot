@@ -64,6 +64,25 @@ int main(void) {
       return -1;
     }
     printf("%s\n", response);
+    char *saveptr = NULL;
+    int private = 1;
+    int i = 0;
+    for (char *s = strtok_r(response, " ", &saveptr); s;
+         s = strtok_r(NULL, " ", &saveptr)) {
+      if (i == 1 && strcmp(s, "PRIVMSG")) {
+        private = 0;
+      }
+      if (i < 3) {
+        i++;
+      } else {
+        if (private) {
+          char privBuffer[BUFFER_SIZE];
+          sprintf(privBuffer, "PRIVMSG #codebambot :hello world\n");
+          send(sockfd, privBuffer, strlen(privBuffer), 0);
+        }
+        break;
+      }
+    }
   }
 
   close(sockfd);
