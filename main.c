@@ -86,12 +86,14 @@ int main(void) {
             send(sockfd, privBuffer, strlen(privBuffer), 0);
           }
           int i = 0;
+          char *saveptr = NULL;
           for (char *s = strtok_r(response, " ", &saveptr); s;
                s = strtok_r(NULL, " ", &saveptr)) {
-            if (i < 4) {
-              i++;
-            } else {
-              printf("command: %s\n", s);
+            printf("%d", i);
+            i++;
+            if (i == 4) {
+              printf("%d %s", i, s);
+              break;
             }
           }
         }
